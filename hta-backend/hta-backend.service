@@ -1,0 +1,17 @@
+[Unit]
+Description=HTA Advisory Backend API Server
+After=network.target
+
+[Service]
+Type=simple
+User=bernardfatoye
+WorkingDirectory=/home/bernardfatoye/HTAplus/hta-backend
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /home/bernardfatoye/HTAplus/hta-backend/index.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
