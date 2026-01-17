@@ -13,7 +13,7 @@ sudo apt-get install -y nginx
 sudo tee /etc/nginx/sites-available/hta-site > /dev/null << 'EOF'
 server {
     listen 80;
-    server_name _;  # Replace with your domain if you have one
+    server_name htaplus.com www.htaplus.com;  # Your domain name
 
     # Root directory for frontend files
     root /home/bernardfatoye/HTAplus;
@@ -64,8 +64,10 @@ CORS_ORIGIN=http://YOUR_PI_IP
 
 Or if accessing via domain:
 ```
-CORS_ORIGIN=http://yourdomain.com
+CORS_ORIGIN=https://htaplus.com,https://www.htaplus.com
 ```
+
+**Note**: Use `https://` if you've set up SSL (recommended). See `DOMAIN_SETUP.md` for SSL setup instructions.
 
 Then restart backend:
 ```bash
