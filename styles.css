@@ -491,12 +491,18 @@ textarea {
     border: 1px solid var(--border);
     border-radius: 16px;
     box-shadow: var(--shadow);
-    display: none;
     min-width: 200px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height 0.25s ease, opacity 0.25s ease;
   }
 
   .site-nav.is-open {
-    display: flex;
+    max-height: 260px;
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
