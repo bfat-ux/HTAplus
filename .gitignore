@@ -1,0 +1,16 @@
+# Environment variables
+.env
+hta-backend/.env
+*.env
+
+# Node modules
+node_modules/
+hta-backend/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
