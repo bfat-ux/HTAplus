@@ -35,7 +35,7 @@ const limiter = rateLimit({
 app.use("/api/", limiter);
 
 app.post("/api/contact", (req, res) => {
-  const { name, email, message } = req.body;
+  const { name, email, message, interest } = req.body;
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: "Name, email, and message are required." });
@@ -46,12 +46,17 @@ app.post("/api/contact", (req, res) => {
     auth: { user: process.env.EMAIL, pass: process.env.PASS },
   });
 
+  // Format email body to include all information
+  const emailBody = interest
+    ? `Interested in: ${interest.charAt(0).toUpperCase() + interest.slice(1)}\n\nMessage:\n${message}`
+    : `Message:\n${message}`;
+
   return transporter
     .sendMail({
       from: email,
       to: "bernardfatoye@gmail.com",
       subject: `HTA+ Inquiry from ${name}`,
-      text: message,
+      text: emailBody,
     })
     .then(() => res.json({ success: true }))
     .catch((err) => res.status(500).json({ error: err.message }));
