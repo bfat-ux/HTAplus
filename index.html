@@ -381,7 +381,13 @@
               </div>
             </div>
           </div>
-          <form class="contact-form" action="#" method="post">
+          <form
+            class="contact-form"
+            id="contact-form"
+            action="#"
+            method="post"
+            data-endpoint="/api/contact"
+          >
             <label>
               Name
               <input type="text" name="name" placeholder="Your name" required />
@@ -404,10 +410,11 @@
             </label>
             <label>
               Message
-              <textarea name="summary" rows="4" placeholder="How can we help?" required></textarea>
+              <textarea name="message" rows="4" placeholder="How can we help?" required></textarea>
             </label>
             <button class="button primary" type="submit">Send inquiry</button>
             <p class="form-note">We’ll follow up with next steps and availability.</p>
+            <p class="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
       </section>
