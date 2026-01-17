@@ -17,11 +17,24 @@ const allowedOrigins = process.env.CORS_ORIGIN
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+      // Allow requests with no origin (like mobile apps, Postman, or same-origin requests)
+      if (!origin) {
         return callback(null, true);
       }
+      // Allow if origin is in allowed list or if wildcard is set
+      if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+        return callback(null, true);
+      }
+      // For development, allow localhost origins
+      if (process.env.NODE_ENV !== "production" && origin.includes("localhost")) {
+        return callback(null, true);
+      }
+      console.log(`CORS blocked origin: ${origin}`);
       return callback(new Error("Not allowed by CORS"));
     },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -34,7 +47,8 @@ const limiter = rateLimit({
 
 app.use("/api/", limiter);
 
-app.post("/api/contact", (req, res) => {
+// Contact handler function (reusable for both routes)
+const handleContact = (req, res) => {
   const { name, email, message, interest } = req.body;
 
   if (!name || !email || !message) {
@@ -60,7 +74,11 @@ app.post("/api/contact", (req, res) => {
     })
     .then(() => res.json({ success: true }))
     .catch((err) => res.status(500).json({ error: err.message }));
-});
+};
+
+// Handle both /api/contact and /contact (in case nginx strips /api/)
+app.post("/api/contact", handleContact);
+app.post("/contact", handleContact);
 
 app.use((err, req, res, next) => {
   if (err.message === "Not allowed by CORS") {
