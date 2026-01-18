@@ -479,6 +479,23 @@ img {
   color: var(--muted);
 }
 
+.section-actions {
+  margin-top: 24px;
+}
+
+.insight-share {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.insight-share-label {
+  font-weight: 600;
+  color: var(--muted);
+}
+
 .about-grid {
   display: grid;
   gap: 32px;
@@ -513,6 +530,9 @@ img {
   height: 120px;
   border-radius: 24px;
   background: linear-gradient(135deg, rgba(15, 118, 110, 0.2), rgba(15, 118, 110, 0.05));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border: 1px solid rgba(15, 118, 110, 0.3);
 }
 
