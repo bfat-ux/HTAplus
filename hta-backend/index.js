@@ -60,6 +60,8 @@ const handleContact = (req, res) => {
     auth: { user: process.env.EMAIL, pass: process.env.PASS },
   });
 
+  const recipient = process.env.CONTACT_TO || process.env.EMAIL;
+
   // Format email body to include all information
   const emailBody = interest
     ? `Interested in: ${interest.charAt(0).toUpperCase() + interest.slice(1)}\n\nMessage:\n${message}`
@@ -67,8 +69,9 @@ const handleContact = (req, res) => {
 
   return transporter
     .sendMail({
-      from: email,
-      to: "bernardfatoye@gmail.com",
+      from: `HTA+ Website <${process.env.EMAIL}>`,
+      replyTo: email,
+      to: recipient,
       subject: `HTA+ Inquiry from ${name}`,
       text: emailBody,
     })
