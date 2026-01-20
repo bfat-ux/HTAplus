@@ -6,6 +6,15 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 require("dotenv").config();
 
+// Validate required environment variables
+const requiredEnvVars = ["EMAIL", "PASS"];
+const missingVars = requiredEnvVars.filter((varName) => !process.env[varName]);
+if (missingVars.length > 0) {
+  console.error(`Error: Missing required environment variables: ${missingVars.join(", ")}`);
+  console.error("Please ensure your .env file contains EMAIL and PASS variables.");
+  process.exit(1);
+}
+
 const app = express();
 app.use(helmet());
 app.use(bodyParser.json({ limit: "200kb" }));
@@ -47,12 +56,52 @@ const limiter = rateLimit({
 
 app.use("/api/", limiter);
 
+// Helper function to sanitize input (basic HTML escaping)
+const sanitizeInput = (str) => {
+  if (typeof str !== "string") return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;")
+    .trim();
+};
+
+// Helper function to validate email format
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 // Contact handler function (reusable for both routes)
 const handleContact = (req, res) => {
   const { name, email, message, interest } = req.body;
 
+  // Validate required fields
   if (!name || !email || !message) {
     return res.status(400).json({ error: "Name, email, and message are required." });
+  }
+
+  // Validate email format
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: "Invalid email format." });
+  }
+
+  // Sanitize inputs
+  const sanitizedName = sanitizeInput(name);
+  const sanitizedEmail = sanitizeInput(email);
+  const sanitizedMessage = sanitizeInput(message);
+  const sanitizedInterest = interest ? sanitizeInput(interest) : "";
+
+  // Validate sanitized inputs aren't empty
+  if (!sanitizedName || !sanitizedEmail || !sanitizedMessage) {
+    return res.status(400).json({ error: "Invalid input. Please check your entries." });
   }
 
   const transporter = nodemailer.createTransport({
@@ -63,20 +112,27 @@ const handleContact = (req, res) => {
   const recipient = process.env.CONTACT_TO || process.env.EMAIL;
 
   // Format email body to include all information
-  const emailBody = interest
-    ? `Interested in: ${interest.charAt(0).toUpperCase() + interest.slice(1)}\n\nMessage:\n${message}`
-    : `Message:\n${message}`;
+  const emailBody = sanitizedInterest
+    ? `Interested in: ${sanitizedInterest.charAt(0).toUpperCase() + sanitizedInterest.slice(1)}\n\nFrom: ${sanitizedName} (${sanitizedEmail})\n\nMessage:\n${sanitizedMessage}`
+    : `From: ${sanitizedName} (${sanitizedEmail})\n\nMessage:\n${sanitizedMessage}`;
 
   return transporter
     .sendMail({
       from: `HTA+ Website <${process.env.EMAIL}>`,
-      replyTo: email,
+      replyTo: sanitizedEmail,
       to: recipient,
-      subject: `HTA+ Inquiry from ${name}`,
+      subject: `HTA+ Inquiry from ${sanitizedName}`,
       text: emailBody,
     })
-    .then(() => res.json({ success: true }))
-    .catch((err) => res.status(500).json({ error: err.message }));
+    .then(() => {
+      console.log(`Contact form submitted successfully from: ${sanitizedEmail}`);
+      res.json({ success: true });
+    })
+    .catch((err) => {
+      console.error("Error sending email:", err);
+      // Don't expose internal error details to client
+      res.status(500).json({ error: "Failed to send message. Please try again later." });
+    });
 };
 
 // Handle both /api/contact and /contact (in case nginx strips /api/)
