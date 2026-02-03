@@ -586,6 +586,7 @@ img {
   border: 1px solid var(--border);
   display: grid;
   gap: 16px;
+  color: var(--ink);
 }
 
 .contact-details {
