@@ -535,7 +535,7 @@ img {
     rgba(var(--accent-rgb), 0.05)
   );
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
   border: 1px solid rgba(var(--accent-rgb), 0.3);
 }
