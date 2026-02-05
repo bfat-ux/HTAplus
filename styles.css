@@ -158,13 +158,6 @@ img {
   color: var(--ink);
 }
 
-.nav-cta {
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: var(--primary-cta);
-  color: white !important;
-}
-
 .nav-toggle {
   display: none;
   background: none;
@@ -210,10 +203,6 @@ img {
   font-size: 0.75rem;
   color: var(--teal);
   font-weight: 600;
-}
-
-.eyebrow.light {
-  color: rgba(var(--white-rgb), 0.75);
 }
 
 .lead {
@@ -291,30 +280,6 @@ img {
   color: var(--brand-navy);
 }
 
-.hero-metrics {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-}
-
-.metric-value {
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin: 0;
-}
-
-.metric-label {
-  color: var(--muted);
-  font-size: 0.9rem;
-  margin: 4px 0 0;
-}
-
-.hero-panel,
-.panel-card,
-.panel-title {
-  display: none;
-}
-
 .section {
   padding: 90px 0;
 }
@@ -329,7 +294,6 @@ img {
 }
 
 .card-grid,
-.case-grid,
 .insight-grid {
   display: grid;
   gap: 20px;
@@ -337,7 +301,6 @@ img {
 }
 
 .card,
-.case-card,
 .insight-card {
   background: white;
   padding: 24px;
@@ -355,7 +318,6 @@ img {
 }
 
 .card h3,
-.case-card h3,
 .insight-card h3 {
   margin-top: 0;
 }
@@ -401,24 +363,6 @@ img {
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(var(--accent-rgb), 0.2);
-}
-
-.steps {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-}
-
-.step {
-  padding: 24px;
-  border-radius: var(--radius);
-  background: white;
-  border: 1px solid var(--border);
-}
-
-.step-number {
-  font-weight: 700;
-  color: var(--accent);
 }
 
 .approach {
