@@ -1,0 +1,23 @@
+# htaplus.com robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /internal.html
+
+# Welcome AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://htaplus.com/sitemap.xml

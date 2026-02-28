@@ -1,0 +1,35 @@
+# HTA+
+
+> HTA+ (Health Technology Advisory) is an independent healthcare technology advisory firm based in Nigeria. We help healthcare organizations, startups, and public institutions across Africa make better technology decisions — from strategy through implementation.
+
+## About
+
+HTA+ is a boutique advisory firm founded by Bernard Fatoye, specializing in healthcare technology advisory and management. We are vendor-neutral and focused on outcomes, not selling software. Our expertise spans digital health readiness, interoperability, health information systems, and capacity building across Nigerian and African health systems.
+
+## Services
+
+- [Digital Health Readiness Assessment](https://htaplus.com/services/assessment.html): Structured, vendor-neutral evaluation of whether a facility, program, or government health initiative is prepared for digital health investments. Covers governance, infrastructure, clinical workflows, interoperability, data quality, workforce readiness, financial sustainability, and measurement. Typical engagement: 2-6 weeks.
+- [Training & Competency Development](https://htaplus.com/services/training.html): Assessment-driven, role-based training customized to real operational gaps. Covers digital health governance, workflow optimization, data quality, interoperability readiness, workforce digital readiness, financial sustainability, and data use for decision-making.
+- Strategy & Policy Advisory: Market positioning, growth roadmaps, and policy guidance that align technology choices with regulatory realities and stakeholder needs.
+- Implementation & Management: Hands-on delivery support translating strategy into operations, with governance structures and performance tracking.
+
+## Expertise Areas
+
+- Digital health readiness assessment
+- Health information exchange and interoperability (FHIR, DHIS2, HL7)
+- EMR/HIS evaluation and implementation oversight
+- Healthcare technology strategy for African markets
+- Vendor-neutral technology advisory
+- Health data governance and quality
+- Change management for digital health adoption
+- Capacity building for health tech teams
+
+## Insights
+
+- [Scaling Digital Health Beyond Pilots in Nigeria (Q1 2026)](https://htaplus.com/insights/q1-2026-scaling-digital-health-nigeria.html): Analysis of how interoperability-first design can help Nigerian digital health programs move beyond pilots into sustainable scale.
+
+## Contact
+
+- Website: https://htaplus.com
+- Email: htaplus@htaplus.com
+- LinkedIn: https://www.linkedin.com/company/healthtechadvisory/
