@@ -21,8 +21,7 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script> -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink: #1a1a2e;
@@ -35,10 +34,8 @@
       --accent-bg: #d8f3dc;
       --white: #ffffff;
       --border: #e0ddd6;
-      --font-display: 'Inter', sans-serif;
-      --font-body: 'Inter', sans-serif;
-      --container-max: 1100px;
-      --container-pad: 24px;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,17 +46,9 @@
       font-family: var(--font-body);
       color: var(--ink);
       background: var(--surface);
-      line-height: 1.6;
+      line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
-
-    h1 { font-weight: 700; }
-
-    h2, h3 { font-weight: 600; }
-
-    p { font-weight: 400; }
-
-    button, nav { font-weight: 500; }
 
     /* ---- NAV ---- */
     nav {
@@ -76,10 +65,9 @@
     nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.06); }
 
     .nav-inner {
-      max-width: var(--container-max);
+      max-width: 1120px;
       margin: 0 auto;
-      padding-left: var(--container-pad);
-      padding-right: var(--container-pad);
+      padding: 0 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -93,7 +81,7 @@
     }
 
     .logo img {
-      height: 50px;
+      height: 44px;
       width: auto;
     }
 
@@ -151,17 +139,15 @@
 
     /* ---- HERO ---- */
     .hero {
-      padding: 10rem 0 6rem;
+      padding: 10rem 2rem 6rem;
       max-width: none;
       margin: 0;
       background: #0f2a44;
     }
 
     .hero-inner {
-      max-width: var(--container-max);
+      max-width: 1120px;
       margin: 0 auto;
-      padding-left: var(--container-pad);
-      padding-right: var(--container-pad);
     }
 
     .hero-label {
@@ -179,7 +165,7 @@
     .hero h1 {
       font-family: var(--font-display);
       font-size: clamp(2.4rem, 5vw, 3.6rem);
-      font-weight: 700;
+      font-weight: 600;
       line-height: 1.2;
       color: #ffffff;
       max-width: 720px;
@@ -214,7 +200,7 @@
       padding: 0.85rem 2rem;
       border-radius: 6px;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       font-size: 0.95rem;
       transition: background 0.2s, transform 0.15s;
     }
@@ -227,7 +213,7 @@
       padding: 0.85rem 2rem;
       border-radius: 6px;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       font-size: 0.95rem;
       border: 1.5px solid rgba(255,255,255,0.3);
       transition: border-color 0.2s, transform 0.15s;
@@ -237,14 +223,12 @@
 
     /* ---- SECTIONS ---- */
     section {
-      padding: 5rem 0;
+      padding: 5rem 2rem;
     }
 
     section .section-inner {
-      max-width: var(--container-max);
+      max-width: 1120px;
       margin: 0 auto;
-      padding-left: var(--container-pad);
-      padding-right: var(--container-pad);
     }
 
     /* Alternating section backgrounds */
@@ -268,10 +252,8 @@
     .section-divider {
       display: none;
       width: 100%;
-      max-width: var(--container-max);
+      max-width: 1120px;
       margin: 0 auto;
-      padding-left: var(--container-pad);
-      padding-right: var(--container-pad);
       border: none;
       border-top: 1px solid var(--border);
     }
@@ -384,7 +366,7 @@
 
     .approach-item h3 {
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 700;
       margin-bottom: 0.5rem;
       color: inherit;
     }
@@ -460,17 +442,15 @@
     .contact-section {
       background: #0f2a44;
       border-radius: 0;
-      padding: 5rem 0;
+      padding: 5rem 2rem;
       margin: 0;
       max-width: none;
       color: #ffffff;
     }
 
     .contact-section .section-inner {
-      max-width: var(--container-max);
+      max-width: 1120px;
       margin: 0 auto;
-      padding-left: var(--container-pad);
-      padding-right: var(--container-pad);
     }
 
     .contact-section .section-label {
@@ -502,7 +482,7 @@
     .contact-email {
       display: inline-block;
       color: #40916c;
-      font-weight: 500;
+      font-weight: 600;
       text-decoration: none;
       font-size: 1.05rem;
       transition: color 0.2s;
@@ -548,7 +528,7 @@
       padding: 0.85rem 2rem;
       border-radius: 6px;
       font-family: var(--font-body);
-      font-weight: 500;
+      font-weight: 600;
       font-size: 0.95rem;
       cursor: pointer;
       transition: background 0.2s;
@@ -582,15 +562,13 @@
     footer {
       background: #0a1f33;
       border-top: 1px solid rgba(255,255,255,0.08);
-      padding: 2rem 0;
+      padding: 2rem;
       text-align: center;
     }
 
     .footer-inner {
-      max-width: var(--container-max);
+      max-width: 1120px;
       margin: 0 auto;
-      padding-left: var(--container-pad);
-      padding-right: var(--container-pad);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -658,11 +636,11 @@
         gap: 1rem;
       }
 
-      .hero { padding: 8rem 0 4rem; }
-      .logo img { height: 45px; }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .logo img { height: 40px; }
       .contact-grid { grid-template-columns: 1fr; }
-      .contact-section { padding: 3rem 0; }
-      section { padding: 3.5rem 0; }
+      .contact-section { padding: 3rem 1.5rem; }
+      section { padding: 3.5rem 1.5rem; }
       .footer-inner { flex-direction: column; text-align: center; }
     }
   </style>
