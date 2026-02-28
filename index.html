@@ -81,7 +81,7 @@
     }
 
     .logo img {
-      height: 36px;
+      height: 44px;
       width: auto;
     }
 
@@ -140,6 +140,12 @@
     /* ---- HERO ---- */
     .hero {
       padding: 10rem 2rem 6rem;
+      max-width: none;
+      margin: 0;
+      background: #0f2a44;
+    }
+
+    .hero-inner {
       max-width: 1120px;
       margin: 0 auto;
     }
@@ -150,7 +156,7 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: rgba(255,255,255,0.6);
       margin-bottom: 1.5rem;
       opacity: 0;
       animation: fadeUp 0.6s ease forwards 0.2s;
@@ -161,7 +167,7 @@
       font-size: clamp(2.4rem, 5vw, 3.6rem);
       font-weight: 600;
       line-height: 1.2;
-      color: var(--ink);
+      color: #ffffff;
       max-width: 720px;
       letter-spacing: -0.02em;
       opacity: 0;
@@ -171,7 +177,7 @@
     .hero p {
       margin-top: 1.5rem;
       font-size: 1.15rem;
-      color: var(--ink-muted);
+      color: rgba(255,255,255,0.75);
       max-width: 560px;
       line-height: 1.7;
       opacity: 0;
@@ -189,8 +195,8 @@
 
     .btn-primary {
       display: inline-block;
-      background: var(--ink);
-      color: var(--white);
+      background: #ffffff;
+      color: #0f2a44;
       padding: 0.85rem 2rem;
       border-radius: 6px;
       text-decoration: none;
@@ -199,21 +205,21 @@
       transition: background 0.2s, transform 0.15s;
     }
 
-    .btn-primary:hover { background: var(--ink-light); transform: translateY(-1px); }
+    .btn-primary:hover { background: rgba(255,255,255,0.9); transform: translateY(-1px); }
 
     .btn-secondary {
       display: inline-block;
-      color: var(--ink);
+      color: #ffffff;
       padding: 0.85rem 2rem;
       border-radius: 6px;
       text-decoration: none;
       font-weight: 600;
       font-size: 0.95rem;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid rgba(255,255,255,0.3);
       transition: border-color 0.2s, transform 0.15s;
     }
 
-    .btn-secondary:hover { border-color: var(--ink-muted); transform: translateY(-1px); }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.6); transform: translateY(-1px); }
 
     /* ---- SECTIONS ---- */
     section {
@@ -553,6 +559,7 @@
       }
 
       .hero { padding: 8rem 1.5rem 4rem; }
+      .logo img { height: 40px; }
       .contact-grid { grid-template-columns: 1fr; }
       .contact-section { padding: 2.5rem 1.5rem; margin: 2rem 1rem 3rem; }
       section { padding: 3.5rem 1.5rem; }
@@ -583,12 +590,14 @@
 
   <!-- HERO -->
   <div class="hero" id="top">
-    <div class="hero-label">Healthcare Technology Advisory</div>
-    <h1>Independent advisory and management for healthcare technology</h1>
-    <p>We help healthcare organizations, startups, and public institutions make better technology decisions — from strategy through implementation.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Start a conversation</a>
-      <a href="#services" class="btn-secondary">What we do</a>
+    <div class="hero-inner">
+      <div class="hero-label">Healthcare Technology Advisory</div>
+      <h1>Independent advisory and management for healthcare technology</h1>
+      <p>We help healthcare organizations, startups, and public institutions make better technology decisions — from strategy through implementation.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Start a conversation</a>
+        <a href="#services" class="btn-secondary">What we do</a>
+      </div>
     </div>
   </div>
 
