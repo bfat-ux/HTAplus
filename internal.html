@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTA+ | Internal</title>
+  <meta name="description" content="HTA+ internal operating manual — service frameworks, pricing, and engagement playbooks.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="images/HTA Favicon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="HTA+ | Internal">
+  <meta property="og:description" content="Internal operating manual for HTA+ team members.">
+  <meta property="og:type" content="website">
+
+  <!-- Analytics: replace with your Plausible domain or Google Analytics ID -->
+  <!-- <script defer data-domain="htaplus.com" src="https://plausible.io/js/script.js"></script> -->
+  <!-- OR Google Analytics: -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --ink-light: #3d3d5c;
+      --ink-muted: #6b6b8a;
+      --surface: #f7f6f3;
+      --surface-dark: #1a1a2e;
+      --surface-card: #ffffff;
+      --accent: #2d6a4f;
+      --accent-light: #40916c;
+      --accent-bg: #d8f3dc;
+      --amber: #b5651d;
+      --amber-bg: #fef3e2;
+      --red-bg: #fde8e8;
+      --red: #c0392b;
+      --blue-bg: #e8f0fe;
+      --blue: #2c5ea0;
+      --white: #ffffff;
+      --border: #e0ddd6;
+      --border-strong: #c5c2ba;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--surface);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== PASSWORD GATE ===== */
+    .gate {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-dark);
+      padding: 2rem;
+    }
+
+    .gate-box {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 3rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+
+    .gate-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+    }
+
+    .gate-logo span { color: var(--accent); }
+
+    .gate-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 2rem;
+    }
+
+    .gate-box p {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .gate-input-wrap {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .gate-input-wrap input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .gate-input-wrap input:focus { border-color: var(--accent); }
+
+    .gate-input-wrap button {
+      background: var(--ink);
+      color: var(--white);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .gate-input-wrap button:hover { background: var(--ink-light); }
+
+    .gate-error {
+      color: var(--red);
+      font-size: 0.82rem;
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    /* ===== INTERNAL CONTENT ===== */
+    .internal { display: none; }
+    .internal.visible { display: block; }
+    .gate.hidden { display: none; }
+
+    /* Top bar */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface-dark);
+      color: var(--white);
+      padding: 0 2rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .top-bar-logo {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .top-bar-logo span { color: var(--accent-light); }
+
+    .top-bar-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: rgba(255,255,255,0.1);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .back-link {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 0.78rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: rgba(255,255,255,0.85); }
+
+    .lock-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      padding: 0.3rem 0.85rem;
+      border-radius: 4px;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .lock-btn:hover { border-color: rgba(255,255,255,0.5); color: var(--white); }
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: calc(100vh - 52px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+      position: sticky;
+      top: 52px;
+      height: calc(100vh - 52px);
+      overflow-y: auto;
+    }
+
+    .sidebar-section {
+      padding: 0 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .sidebar-heading {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: var(--ink-light);
+      font-size: 0.85rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 5px;
+      margin-bottom: 0.15rem;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .sidebar a:hover { background: var(--surface); color: var(--ink); }
+    .sidebar a.active { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+
+    /* Main content */
+    .main {
+      padding: 3rem 4rem 5rem;
+      max-width: 860px;
+    }
+
+    .doc-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .doc-header h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .doc-meta {
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+    }
+
+    .doc-meta span {
+      font-family: var(--font-mono);
+      background: var(--surface);
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+    }
+
+    /* Section styles */
+    .doc-section {
+      margin-bottom: 3.5rem;
+    }
+
+    .doc-section > h2 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      padding-top: 1rem;
+      letter-spacing: -0.015em;
+    }
+
+    .doc-section > .section-intro {
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      max-width: 640px;
+      line-height: 1.65;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 2rem 0 0.75rem;
+    }
+
+    h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink-light);
+      margin: 1.25rem 0 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    p { margin-bottom: 0.85rem; font-size: 0.93rem; color: var(--ink-light); line-height: 1.7; }
+
+    /* Callout boxes */
+    .callout {
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .callout-green { background: var(--accent-bg); border-left: 3px solid var(--accent); }
+    .callout-amber { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+    .callout-blue { background: var(--blue-bg); border-left: 3px solid var(--blue); }
+    .callout-red { background: var(--red-bg); border-left: 3px solid var(--red); }
+
+    .callout strong { color: var(--ink); }
+
+    /* Tables */
+    .doc-table-wrap {
+      overflow-x: auto;
+      margin: 1.25rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead { background: var(--surface); }
+
+    th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink-light);
+      vertical-align: top;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    /* Phase cards */
+    .phase-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .phase-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .phase-num {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: var(--accent-bg);
+      color: var(--accent);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .phase-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .phase-card p { margin-bottom: 0.5rem; }
+
+    .phase-card ul {
+      margin: 0.5rem 0 0 1.25rem;
+      font-size: 0.88rem;
+      color: var(--ink-light);
+    }
+
+    .phase-card li { margin-bottom: 0.35rem; line-height: 1.55; }
+
+    /* Tag/badge */
+    .tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      font-weight: 500;
+      margin-right: 0.35rem;
+    }
+
+    .tag-green { background: var(--accent-bg); color: var(--accent); }
+    .tag-amber { background: var(--amber-bg); color: var(--amber); }
+    .tag-blue { background: var(--blue-bg); color: var(--blue); }
+
+    /* Dividers */
+    .doc-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main { padding: 2rem 1.5rem 4rem; }
+      .top-bar { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+      .top-bar-right { gap: 0.75rem; }
+      .top-bar-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== PASSWORD GATE ===== -->
+  <div class="gate" id="gate">
+    <div class="gate-box">
+      <div class="gate-logo">HTA<span>+</span></div>
+      <div class="gate-label">Internal</div>
+      <p>This area is restricted to authorized team members and partners.</p>
+      <div class="gate-input-wrap">
+        <input type="password" id="passInput" placeholder="Access code" autocomplete="off"
+               onkeydown="if(event.key==='Enter') tryAccess()">
+        <button onclick="tryAccess()">Enter</button>
+      </div>
+      <div class="gate-error" id="gateError">Incorrect access code. Please try again.</div>
+    </div>
+  </div>
+
+  <!-- ===== INTERNAL CONTENT ===== -->
+  <div class="internal" id="internal">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="top-bar-logo">HTA<span>+</span></div>
+      <div class="top-bar-right">
+        <a href="index.html" class="back-link">&larr; Back to site</a>
+        <div class="top-bar-badge">Internal — Confidential</div>
+        <button class="lock-btn" onclick="lockPage()">Lock</button>
+      </div>
+    </div>
+
+    <div class="layout">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Service Frameworks</div>
+          <a href="#svc-assessment">Readiness Assessment</a>
+          <a href="#svc-strategy">Strategy &amp; Policy</a>
+          <a href="#svc-implementation">Implementation &amp; Mgmt</a>
+          <a href="#svc-training">Training &amp; Capacity</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Pricing</div>
+          <a href="#pricing-models">Engagement Models</a>
+          <a href="#pricing-rates">Rate Card</a>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-heading">Playbooks</div>
+          <a href="#playbook-lifecycle">Engagement Lifecycle</a>
+          <a href="#playbook-onboarding">Client Onboarding</a>
+          <a href="#playbook-qa">Quality Assurance</a>
+          <a href="#playbook-stakeholder">Stakeholder Management</a>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="main">
+        <div class="doc-header">
+          <h1>HTA+ Operating Manual</h1>
+          <div class="doc-meta">
+            Version 1.0 &nbsp;&middot;&nbsp; Last updated February 2026 &nbsp;&middot;&nbsp; <span>CONFIDENTIAL</span>
+          </div>
+        </div>
+
+        <!-- =========================================== -->
+        <!-- SERVICE FRAMEWORKS                          -->
+        <!-- =========================================== -->
+
+        <!-- READINESS ASSESSMENT -->
+        <div class="doc-section" id="svc-assessment">
+          <h2>Readiness Assessment</h2>
+          <p class="section-intro">
+            A structured, vendor-neutral evaluation of an organization's ability to adopt, implement,
+            or scale health technology — covering infrastructure, workflows, governance, and people.
+          </p>
+
+          <h3>When to propose this</h3>
+          <p>
+            The client is considering a new system (EMR, telehealth platform, data exchange layer, etc.)
+            but hasn't committed to a vendor. Or they've deployed something that isn't working and need
+            an honest diagnosis. This is also the natural entry-point engagement — it builds trust and
+            often leads to Strategy or Implementation work.
+          </p>
+
+          <h3>Assessment Framework</h3>
+          <p>The assessment scores the organization across five dimensions:</p>
+
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Dimension</th><th>What We Evaluate</th><th>Weight</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Infrastructure</strong></td>
+                  <td>Connectivity, hardware, power reliability, existing systems, data formats, integration capability</td>
+                  <td>25%</td>
+                </tr>
+                <tr>
+                  <td><strong>Workflows</strong></td>
+                  <td>Current clinical and administrative processes, pain points, workarounds, paper dependencies</td>
+                  <td>20%</td>
+                </tr>
+                <tr>
+                  <td><strong>Governance</strong></td>
+                  <td>Decision-making structures, data ownership policies, regulatory posture, change management history</td>
+                  <td>20%</td>
+                </tr>
+                <tr>
+                  <td><strong>People &amp; Skills</strong></td>
+                  <td>Technical talent, clinical champions, leadership buy-in, training capacity, vendor management experience</td>
+                  <td>20%</td>
+                </tr>
+                <tr>
+                  <td><strong>Ecosystem</strong></td>
+                  <td>Payer landscape, referral network maturity, regulatory environment, partner dependencies</td>
+                  <td>15%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-green">
+            <strong>Output:</strong> Scored readiness matrix, gap analysis, prioritized recommendation roadmap, and executive summary. Delivered as a written report with a 60-minute walkthrough session.
+          </div>
+
+          <h3>Methodology — Phase Breakdown</h3>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="phase-num">PHASE 1</span>
+              <span class="phase-title">Scoping &amp; Desk Review</span>
+            </div>
+            <p>Duration: 1 week</p>
+            <ul>
+              <li>Kickoff call — align on objectives, constraints, and key stakeholders</li>
+              <li>Collect existing documentation (org charts, IT inventories, policy docs, prior assessments)</li>
+              <li>Desk review of regulatory environment, market context, and comparable deployments</li>
+              <li>Develop interview guides tailored to stakeholder groups</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="phase-num">PHASE 2</span>
+              <span class="phase-title">Discovery &amp; Data Collection</span>
+            </div>
+            <p>Duration: 2–3 weeks</p>
+            <ul>
+              <li>Stakeholder interviews (leadership, IT, clinical leads, frontline staff) — typically 8–15 sessions</li>
+              <li>Site visits where applicable — observe workflows, infrastructure, workarounds</li>
+              <li>Technical audit of existing systems (connectivity, uptime, integration points)</li>
+              <li>Patient/community perspective capture (where relevant and ethical)</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="phase-num">PHASE 3</span>
+              <span class="phase-title">Analysis &amp; Scoring</span>
+            </div>
+            <p>Duration: 1–2 weeks</p>
+            <ul>
+              <li>Score each dimension (1–5 scale with defined rubrics)</li>
+              <li>Identify critical gaps, dependencies, and quick wins</li>
+              <li>Benchmark against comparable organizations where data exists</li>
+              <li>Develop prioritized recommendation roadmap (immediate / 6-month / 12-month)</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="phase-num">PHASE 4</span>
+              <span class="phase-title">Report &amp; Presentation</span>
+            </div>
+            <p>Duration: 1 week</p>
+            <ul>
+              <li>Written report: executive summary, detailed findings per dimension, scored matrix, roadmap</li>
+              <li>60-minute presentation to leadership with Q&amp;A</li>
+              <li>Optional: condensed board-ready summary (2–3 pages)</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-amber">
+            <strong>Typical total duration:</strong> 5–7 weeks. Can compress to 3–4 weeks for smaller orgs or focused scope.
+          </div>
+        </div>
+
+        <hr class="doc-divider">
+
+        <!-- STRATEGY & POLICY -->
+        <div class="doc-section" id="svc-strategy">
+          <h2>Strategy &amp; Policy Advisory</h2>
+          <p class="section-intro">
+            Helping clients define where to go with technology — and how to get there within the regulatory,
+            financial, and political realities they operate in.
+          </p>
+
+          <h3>When to propose this</h3>
+          <p>
+            The client has a general vision but no roadmap. Or they're navigating a regulatory change,
+            entering a new market, or trying to align multiple stakeholders around a shared technology
+            direction. This often follows an Assessment engagement or comes from organizations that
+            already know their gaps but need help prioritizing and sequencing.
+          </p>
+
+          <h3>Typical Workstreams</h3>
+
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Workstream</th><th>Description</th><th>Typical Duration</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Technology Roadmap</strong></td>
+                  <td>Prioritized, phased plan for technology adoption — from quick wins to long-term platform decisions. Accounts for budget, talent, and dependencies.</td>
+                  <td>4–8 weeks</td>
+                </tr>
+                <tr>
+                  <td><strong>Market &amp; Positioning</strong></td>
+                  <td>For health tech startups and scale-ups: competitive analysis, value proposition refinement, go-to-market strategy, partnership identification.</td>
+                  <td>3–6 weeks</td>
+                </tr>
+                <tr>
+                  <td><strong>Policy &amp; Regulatory Navigation</strong></td>
+                  <td>Mapping the regulatory landscape, identifying compliance requirements, building relationships with regulators, preparing for licensing or accreditation.</td>
+                  <td>Ongoing / retainer</td>
+                </tr>
+                <tr>
+                  <td><strong>Business Model Design</strong></td>
+                  <td>Revenue model development, unit economics, pricing strategy, sustainability planning — especially for organizations transitioning from grant-funded to commercial models.</td>
+                  <td>4–6 weeks</td>
+                </tr>
+                <tr>
+                  <td><strong>Stakeholder Alignment</strong></td>
+                  <td>Facilitated sessions to build consensus among leadership, clinical teams, IT, government partners, and funders around a shared technology direction.</td>
+                  <td>2–4 weeks</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-blue">
+            <strong>Key principle:</strong> Every strategy deliverable must answer "what do we do Monday morning?" — if the client can't act on it within 2 weeks of receiving it, the strategy is too abstract.
+          </div>
+
+          <h3>Deliverables</h3>
+          <p>
+            Depending on scope: strategy document, executive presentation, implementation-ready roadmap
+            with milestones and owners, regulatory compliance checklist, stakeholder alignment brief,
+            or investor-ready materials.
+          </p>
+        </div>
+
+        <hr class="doc-divider">
+
+        <!-- IMPLEMENTATION & MANAGEMENT -->
+        <div class="doc-section" id="svc-implementation">
+          <h2>Implementation &amp; Management</h2>
+          <p class="section-intro">
+            Hands-on delivery support — translating strategy into running systems, with governance
+            and performance structures that keep things on track.
+          </p>
+
+          <h3>When to propose this</h3>
+          <p>
+            The client has committed to a direction (often after Assessment and/or Strategy work with us
+            or another party) and needs execution support. They may lack internal project management capacity,
+            vendor management experience, or the ability to hold multiple workstreams together. This is our
+            highest-value, longest-duration engagement type.
+          </p>
+
+          <h3>Engagement Structure</h3>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="phase-num">SETUP</span>
+              <span class="phase-title">Governance &amp; Team Design</span>
+            </div>
+            <ul>
+              <li>Define project governance: steering committee, working groups, decision authority</li>
+              <li>Establish reporting cadence (weekly standups, monthly steering, quarterly reviews)</li>
+              <li>Set up tracking infrastructure: project plan, risk register, decision log</li>
+              <li>Clarify roles — what HTA+ owns vs. what the client owns vs. what vendors own</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="phase-num">EXECUTE</span>
+              <span class="phase-title">Delivery Management</span>
+            </div>
+            <ul>
+              <li>Vendor coordination and accountability (RFP support, contract review, milestone tracking)</li>
+              <li>Technical oversight — ensuring build aligns with requirements and standards</li>
+              <li>Change management support — communications, training planning, resistance management</li>
+              <li>Performance dashboards — real-time visibility into progress, spend, and risk</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="phase-num">SUSTAIN</span>
+              <span class="phase-title">Transition &amp; Handoff</span>
+            </div>
+            <ul>
+              <li>Knowledge transfer to internal teams</li>
+              <li>Post-launch monitoring plan (KPIs, feedback loops, issue escalation)</li>
+              <li>Lessons learned documentation</li>
+              <li>Optional: retainer for ongoing advisory during stabilization (typically 3–6 months)</li>
+            </ul>
+          </div>
+
+          <div class="callout callout-amber">
+            <strong>Scope guard:</strong> HTA+ does not build software. We manage the process, hold vendors accountable,
+            and ensure the client's interests are protected. If a client needs custom development, we help
+            them find and manage the right partner.
+          </div>
+        </div>
+
+        <hr class="doc-divider">
+
+        <!-- TRAINING & CAPACITY BUILDING -->
+        <div class="doc-section" id="svc-training">
+          <h2>Training &amp; Capacity Building</h2>
+          <p class="section-intro">
+            Building internal capability so that organizations can sustain technology adoption without
+            permanent external dependency.
+          </p>
+
+          <h3>Program Formats</h3>
+
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Format</th><th>Audience</th><th>Duration</th><th>Description</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Executive Briefing</strong></td>
+                  <td>C-suite, Board</td>
+                  <td>Half-day</td>
+                  <td>Health tech landscape, decision frameworks, governance essentials. High-level, non-technical.</td>
+                </tr>
+                <tr>
+                  <td><strong>Leadership Workshop</strong></td>
+                  <td>Directors, Dept Heads</td>
+                  <td>1–2 days</td>
+                  <td>Deeper dive: vendor evaluation, requirements definition, change management, data governance basics.</td>
+                </tr>
+                <tr>
+                  <td><strong>Practitioner Bootcamp</strong></td>
+                  <td>IT, Clinical Leads, Data Teams</td>
+                  <td>3–5 days</td>
+                  <td>Hands-on: system configuration, data standards, integration patterns, troubleshooting, user support models.</td>
+                </tr>
+                <tr>
+                  <td><strong>Frontline Adoption Program</strong></td>
+                  <td>End users, Nurses, CHWs</td>
+                  <td>Ongoing</td>
+                  <td>Train-the-trainer model. Workflow-specific training, quick reference guides, peer champion networks.</td>
+                </tr>
+                <tr>
+                  <td><strong>Custom Programs</strong></td>
+                  <td>Mixed</td>
+                  <td>Varies</td>
+                  <td>Bespoke content for specific organizational needs — regulatory compliance, data privacy, or platform-specific training.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-green">
+            <strong>Philosophy:</strong> The goal is to make ourselves unnecessary. Every training engagement should
+            leave the client with documented knowledge, designated internal trainers, and the confidence to
+            operate independently.
+          </div>
+        </div>
+
+        <hr class="doc-divider">
+
+        <!-- =========================================== -->
+        <!-- PRICING & ENGAGEMENT MODELS                 -->
+        <!-- =========================================== -->
+
+        <div class="doc-section" id="pricing-models">
+          <h2>Engagement Models</h2>
+          <p class="section-intro">
+            How we structure and price work. Flexibility matters — different clients and contexts require
+            different commercial arrangements.
+          </p>
+
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Model</th><th>Best For</th><th>Structure</th><th>Notes</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Fixed Fee</strong></td>
+                  <td>Assessments, defined strategy deliverables</td>
+                  <td>Scoped price with clear deliverables and timeline. 50% upfront, 50% on delivery.</td>
+                  <td>Preferred for new client relationships. Low risk for both sides.</td>
+                </tr>
+                <tr>
+                  <td><strong>Monthly Retainer</strong></td>
+                  <td>Ongoing advisory, policy navigation, implementation oversight</td>
+                  <td>Fixed monthly fee for an agreed number of hours/days. Reviewed quarterly.</td>
+                  <td>Best for long-running engagements. Includes a set number of hours; overages billed at day rate.</td>
+                </tr>
+                <tr>
+                  <td><strong>Day Rate</strong></td>
+                  <td>Short-term, ad hoc advisory, workshops</td>
+                  <td>Per-day billing with a minimum of 2 days.</td>
+                  <td>Used for workshops, speaking, or supplement to retainer. Travel billed separately.</td>
+                </tr>
+                <tr>
+                  <td><strong>Milestone-Based</strong></td>
+                  <td>Implementation projects with clear phases</td>
+                  <td>Payments tied to agreed milestones (e.g., governance setup complete, vendor selected, go-live).</td>
+                  <td>Aligns incentives. Requires well-defined milestones upfront.</td>
+                </tr>
+                <tr>
+                  <td><strong>Equity / Hybrid</strong></td>
+                  <td>Early-stage startups with limited cash</td>
+                  <td>Reduced cash fee + equity or revenue share. Structured case-by-case.</td>
+                  <td>Only for startups with strong product-market signal. Requires advisory board seat or equivalent oversight.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="doc-section" id="pricing-rates">
+          <h2>Rate Card</h2>
+          <p class="section-intro">
+            Baseline rates. All rates in USD. Adjust for market, client type, and strategic importance.
+            NGO/government rates are discounted by default.
+          </p>
+
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Engagement Type</th><th>Commercial Rate</th><th>NGO / Government Rate</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Readiness Assessment (standard)</td>
+                  <td>$12,000 – $25,000</td>
+                  <td>$8,000 – $16,000</td>
+                </tr>
+                <tr>
+                  <td>Strategy Engagement (4–8 weeks)</td>
+                  <td>$15,000 – $40,000</td>
+                  <td>$10,000 – $25,000</td>
+                </tr>
+                <tr>
+                  <td>Implementation Management (monthly)</td>
+                  <td>$6,000 – $12,000 /month</td>
+                  <td>$4,000 – $8,000 /month</td>
+                </tr>
+                <tr>
+                  <td>Day Rate (advisory / workshops)</td>
+                  <td>$1,500 – $2,500 /day</td>
+                  <td>$1,000 – $1,500 /day</td>
+                </tr>
+                <tr>
+                  <td>Executive Briefing (half-day)</td>
+                  <td>$3,000 – $5,000</td>
+                  <td>$2,000 – $3,500</td>
+                </tr>
+                <tr>
+                  <td>Practitioner Bootcamp (3–5 days)</td>
+                  <td>$8,000 – $15,000</td>
+                  <td>$5,000 – $10,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-red">
+            <strong>Never share this rate card externally.</strong> Proposals should use tailored pricing
+            based on scope, client type, and strategic value. These ranges are internal guides only.
+          </div>
+
+          <h3>Expense Policy</h3>
+          <p>
+            Travel, accommodation, and incidental expenses are billed at cost with receipts.
+            Domestic travel within Nigeria is included in project fees for engagements over $10,000.
+            International travel is always billed separately and approved in advance.
+          </p>
+        </div>
+
+        <hr class="doc-divider">
+
+        <!-- =========================================== -->
+        <!-- PLAYBOOKS                                    -->
+        <!-- =========================================== -->
+
+        <div class="doc-section" id="playbook-lifecycle">
+          <h2>Engagement Lifecycle</h2>
+          <p class="section-intro">
+            Every engagement follows this arc. Adapt timing and emphasis based on engagement type,
+            but don't skip stages.
+          </p>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="tag tag-green">STAGE 1</span>
+              <span class="phase-title">Inquiry &amp; Qualification</span>
+            </div>
+            <p><strong>Duration:</strong> 1–5 business days</p>
+            <ul>
+              <li>Inbound inquiry received (via website, referral, or direct outreach)</li>
+              <li>Initial response within 24 hours — acknowledge, ask 2–3 qualifying questions</li>
+              <li>Qualify: Is this within our capability? Is the client serious? Is there budget?</li>
+              <li>If qualified, schedule a 30-minute discovery call</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="tag tag-green">STAGE 2</span>
+              <span class="phase-title">Discovery &amp; Scoping</span>
+            </div>
+            <p><strong>Duration:</strong> 1–2 weeks</p>
+            <ul>
+              <li>Discovery call: understand the problem, context, constraints, timeline, decision-makers</li>
+              <li>Follow-up: request relevant documents, clarify scope boundaries</li>
+              <li>Draft scope of work — clear deliverables, timeline, assumptions, pricing</li>
+              <li>Internal review before sending proposal</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="tag tag-green">STAGE 3</span>
+              <span class="phase-title">Proposal &amp; Agreement</span>
+            </div>
+            <p><strong>Duration:</strong> 1–3 weeks (client-dependent)</p>
+            <ul>
+              <li>Send proposal with clear scope, deliverables, timeline, team, and pricing</li>
+              <li>Walk through the proposal on a call — never just email and wait</li>
+              <li>Handle questions, negotiate scope (not rates) if needed</li>
+              <li>Execute engagement letter or contract. Collect upfront payment where applicable.</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="tag tag-blue">STAGE 4</span>
+              <span class="phase-title">Delivery</span>
+            </div>
+            <p><strong>Duration:</strong> Varies by engagement type</p>
+            <ul>
+              <li>Kick off with a formal session — align on communication cadence, points of contact, tools</li>
+              <li>Execute per the service-specific methodology (see sections above)</li>
+              <li>Regular check-ins with client (weekly minimum)</li>
+              <li>Flag risks and scope changes early — never surprise the client</li>
+            </ul>
+          </div>
+
+          <div class="phase-card">
+            <div class="phase-card-header">
+              <span class="tag tag-amber">STAGE 5</span>
+              <span class="phase-title">Close &amp; Follow-up</span>
+            </div>
+            <p><strong>Duration:</strong> 1–2 weeks post-delivery</p>
+            <ul>
+              <li>Deliver final outputs, conduct walkthrough/presentation</li>
+              <li>Collect feedback (informal call + short written survey)</li>
+              <li>Send final invoice</li>
+              <li>Schedule 30-day check-in to see how things are going</li>
+              <li>Add client to quarterly insights mailing list (with permission)</li>
+              <li>Document lessons learned internally</li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="doc-divider">
+
+        <div class="doc-section" id="playbook-onboarding">
+          <h2>Client Onboarding</h2>
+          <p class="section-intro">
+            What happens between signed contract and first deliverable. Getting this right sets the tone
+            for the entire engagement.
+          </p>
+
+          <h3>Onboarding Checklist</h3>
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Item</th><th>Owner</th><th>Timing</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Signed engagement letter / contract</td><td>HTA+</td><td>Before kickoff</td></tr>
+                <tr><td>Upfront payment received (if applicable)</td><td>Client</td><td>Before kickoff</td></tr>
+                <tr><td>Primary point of contact confirmed (both sides)</td><td>Both</td><td>Day 1</td></tr>
+                <tr><td>Communication channels set up (email group, shared folder, Slack/WhatsApp)</td><td>HTA+</td><td>Day 1–2</td></tr>
+                <tr><td>Document request sent (org charts, IT inventory, prior reports, etc.)</td><td>HTA+</td><td>Day 1–3</td></tr>
+                <tr><td>Kickoff meeting scheduled</td><td>HTA+</td><td>Within first week</td></tr>
+                <tr><td>Project plan / Gantt shared</td><td>HTA+</td><td>By kickoff meeting</td></tr>
+                <tr><td>Stakeholder interview schedule confirmed</td><td>Client</td><td>Week 1–2</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout callout-blue">
+            <strong>First impression rule:</strong> The client should feel organized momentum within 48 hours
+            of signing. If they're waiting on us for anything in the first week, we've already lost credibility.
+          </div>
+        </div>
+
+        <hr class="doc-divider">
+
+        <div class="doc-section" id="playbook-qa">
+          <h2>Quality Assurance</h2>
+          <p class="section-intro">
+            Standards for what goes out the door with the HTA+ name on it.
+          </p>
+
+          <h3>Deliverable Standards</h3>
+          <p>Every client-facing deliverable must meet these criteria before release:</p>
+
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th>Criterion</th><th>Standard</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Accuracy</strong></td><td>All data, claims, and references verified. No placeholder text. No unverified statistics.</td></tr>
+                <tr><td><strong>Clarity</strong></td><td>A non-technical executive should understand the executive summary. Jargon defined or eliminated.</td></tr>
+                <tr><td><strong>Actionability</strong></td><td>Every recommendation includes who should do it, by when, and what "done" looks like.</td></tr>
+                <tr><td><strong>Design</strong></td><td>Professional formatting. Consistent branding. Clean typography. No walls of text.</td></tr>
+                <tr><td><strong>Proofreading</strong></td><td>Zero typos, grammatical errors, or formatting inconsistencies. Read it out loud before sending.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Review Process</h3>
+          <p>
+            All deliverables go through a two-stage review: self-review by the author (using the checklist above),
+            then a peer review by one other team member. For high-stakes deliverables (board presentations,
+            strategy documents, anything over $20,000 engagement value), the Principal Advisor reviews before release.
+          </p>
+        </div>
+
+        <hr class="doc-divider">
+
+        <div class="doc-section" id="playbook-stakeholder">
+          <h2>Stakeholder Management</h2>
+          <p class="section-intro">
+            How we identify, map, and manage the people who influence whether our work succeeds.
+          </p>
+
+          <h3>Stakeholder Mapping</h3>
+          <p>At the start of every engagement, map stakeholders on two axes:</p>
+
+          <div class="doc-table-wrap">
+            <table>
+              <thead>
+                <tr><th></th><th>High Influence</th><th>Low Influence</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>High Interest</strong></td>
+                  <td><span class="tag tag-green">MANAGE CLOSELY</span> Regular 1:1s, co-create with them, no surprises</td>
+                  <td><span class="tag tag-blue">KEEP INFORMED</span> Regular updates, invite to reviews, address concerns proactively</td>
+                </tr>
+                <tr>
+                  <td><strong>Low Interest</strong></td>
+                  <td><span class="tag tag-amber">KEEP SATISFIED</span> Periodic high-level updates, escalate only what matters to them</td>
+                  <td>Monitor — minimal effort unless status changes</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Communication Principles</h3>
+          <p>
+            Never surprise a stakeholder. If bad news is coming, they should hear it from us first,
+            in private, with a proposed path forward. Over-communicate early in the engagement when
+            trust is still being built. Match communication format to the stakeholder — some want
+            a weekly email, some want a 5-minute WhatsApp voice note, some want a formal report.
+            Ask them.
+          </p>
+
+          <div class="callout callout-green">
+            <strong>The 48-hour rule:</strong> Any client question, concern, or escalation gets a substantive
+            response within 48 hours. Even if the answer is "we're still working on this, here's where we are."
+            Silence is never acceptable.
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script>
+    // Simple password gate
+    // Change this value to set the access code
+    const ACCESS_CODE = 'htaplus2026';
+
+    function tryAccess() {
+      const input = document.getElementById('passInput');
+      if (input.value === ACCESS_CODE) {
+        document.getElementById('gate').classList.add('hidden');
+        document.getElementById('internal').classList.add('visible');
+        sessionStorage.setItem('hta_auth', '1');
+      } else {
+        document.getElementById('gateError').style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function lockPage() {
+      sessionStorage.removeItem('hta_auth');
+      document.getElementById('internal').classList.remove('visible');
+      document.getElementById('gate').classList.remove('hidden');
+      document.getElementById('passInput').value = '';
+      document.getElementById('gateError').style.display = 'none';
+    }
+
+    // Restore session
+    if (sessionStorage.getItem('hta_auth') === '1') {
+      document.getElementById('gate').classList.add('hidden');
+      document.getElementById('internal').classList.add('visible');
+    }
+
+    // Sidebar active state
+    const sidebarLinks = document.querySelectorAll('.sidebar a');
+    const sections = document.querySelectorAll('.doc-section');
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          sidebarLinks.forEach(a => a.classList.remove('active'));
+          const activeLink = document.querySelector('.sidebar a[href="#' + entry.target.id + '"]');
+          if (activeLink) activeLink.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => sectionObserver.observe(s));
+  </script>
+
+</body>
+</html>
