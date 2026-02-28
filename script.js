@@ -1,64 +1,103 @@
 const navToggle = document.querySelector(".nav-toggle");
-const siteNav = document.querySelector(".site-nav");
+const primaryNav =
+  document.querySelector(".site-nav") || document.querySelector(".nav-links");
+const navOpenClass = primaryNav?.classList.contains("site-nav")
+  ? "is-open"
+  : "open";
 
 const closeNav = () => {
-  if (!siteNav || !navToggle) {
+  if (!primaryNav || !navToggle) {
     return;
   }
-  siteNav.classList.remove("is-open");
+  primaryNav.classList.remove(navOpenClass);
   navToggle.setAttribute("aria-expanded", "false");
 };
 
 const toggleNav = () => {
-  if (!siteNav || !navToggle) {
+  if (!primaryNav || !navToggle) {
     return;
   }
-  const isOpen = siteNav.classList.toggle("is-open");
+  const isOpen = primaryNav.classList.toggle(navOpenClass);
   navToggle.setAttribute("aria-expanded", String(isOpen));
 };
 
-if (navToggle) {
+if (navToggle && primaryNav) {
   navToggle.addEventListener("click", toggleNav);
-}
-
-if (siteNav) {
-  siteNav.querySelectorAll("a").forEach((link) => {
+  primaryNav.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", closeNav);
   });
 }
 
 document.addEventListener("click", (event) => {
-  if (!siteNav || !navToggle) {
+  if (!primaryNav || !navToggle) {
     return;
   }
   const target = event.target;
   if (
-    siteNav.classList.contains("is-open") &&
+    primaryNav.classList.contains(navOpenClass) &&
     target instanceof Node &&
-    !siteNav.contains(target) &&
+    !primaryNav.contains(target) &&
     !navToggle.contains(target)
   ) {
     closeNav();
   }
 });
 
-const contactForm = document.querySelector("#contact-form");
-const statusEl = document.querySelector(".form-status");
+const navbar = document.querySelector("#navbar");
+if (navbar) {
+  const syncNavbarState = () => {
+    navbar.classList.toggle("scrolled", window.scrollY > 10);
+  };
+  syncNavbarState();
+  window.addEventListener("scroll", syncNavbarState, { passive: true });
+}
 
-const setStatus = (message, isError = false) => {
-  if (!statusEl) {
-    return;
-  }
-  statusEl.textContent = message;
-  statusEl.classList.toggle("is-error", isError);
-};
+const revealTargets = document.querySelectorAll(".reveal");
+if ("IntersectionObserver" in window && revealTargets.length > 0) {
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+  revealTargets.forEach((target) => revealObserver.observe(target));
+}
+
+const contactForm =
+  document.querySelector("#contact-form") || document.querySelector("#contactForm");
 
 if (contactForm) {
+  const statusEl =
+    contactForm.querySelector(".form-status") ||
+    document.querySelector("#formStatus") ||
+    document.querySelector(".form-status");
+  const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+  const setStatus = (message, state) => {
+    if (!statusEl) {
+      return;
+    }
+    statusEl.textContent = message;
+    statusEl.classList.remove("success", "error", "is-error");
+    if (state === "success") {
+      statusEl.classList.add("success");
+    }
+    if (state === "error") {
+      statusEl.classList.add("error", "is-error");
+    }
+  };
+
   contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const endpoint =
-      contactForm.getAttribute("data-endpoint") || "/api/contact";
+      contactForm.getAttribute("data-endpoint") ||
+      contactForm.getAttribute("action") ||
+      "/api/contact";
     const formData = new FormData(contactForm);
     const payload = {
       name: formData.get("name"),
@@ -67,7 +106,12 @@ if (contactForm) {
       interest: formData.get("interest") || "",
     };
 
-    setStatus("Sending your message...");
+    const originalButtonText = submitBtn?.textContent || "";
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+    }
+    setStatus("", undefined);
 
     try {
       const response = await fetch(endpoint, {
@@ -78,13 +122,25 @@ if (contactForm) {
 
       if (!response.ok) {
         const { error } = await response.json().catch(() => ({}));
-        throw new Error(error || "Something went wrong. Please try again.");
+        throw new Error(
+          error ||
+            "Something went wrong. Please email us directly at htaplus@htaplus.com."
+        );
       }
 
-      setStatus("Thanks! Your message has been sent.");
+      setStatus("Thanks! Your message has been sent.", "success");
       contactForm.reset();
     } catch (error) {
-      setStatus(error.message, true);
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please email us directly at htaplus@htaplus.com.";
+      setStatus(message, "error");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalButtonText;
+      }
     }
   });
 }

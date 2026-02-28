@@ -651,7 +651,7 @@
   <nav id="navbar">
     <div class="nav-inner">
       <a href="#top" class="logo"><img src="images/HTA Logo icon.svg" alt="HTA+ Healthcare Technology Advisory"></a>
-      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
@@ -815,68 +815,7 @@
     </div>
   </footer>
 
-  <script>
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
-    });
-
-    // Reveal on scroll
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => observer.observe(el));
-
-    // Close mobile nav on link click
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
-    });
-
-    // Contact form submission
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const form = this;
-      const btn = form.querySelector('button[type="submit"]');
-      const status = document.getElementById('formStatus');
-      const originalText = btn.textContent;
-
-      btn.disabled = true;
-      btn.textContent = 'Sending…';
-      status.className = 'form-status';
-      status.style.display = 'none';
-
-      const data = {
-        name: form.name.value,
-        email: form.email.value,
-        interest: form.interest.value,
-        message: form.message.value
-      };
-
-      fetch(form.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-      .then(function(res) {
-        if (!res.ok) throw new Error('Server error');
-        return res.json();
-      })
-      .then(function() {
-        status.textContent = 'Thank you — we\'ll be in touch soon.';
-        status.className = 'form-status success';
-        form.reset();
-      })
-      .catch(function() {
-        status.textContent = 'Something went wrong. Please email us directly at htaplus@htaplus.com.';
-        status.className = 'form-status error';
-      })
-      .finally(function() {
-        btn.disabled = false;
-        btn.textContent = originalText;
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 
 </body>
 </html>
