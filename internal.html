@@ -6,7 +6,7 @@
   <title>HTA+ | Internal</title>
   <meta name="description" content="HTA+ internal operating manual — service frameworks, pricing, and engagement playbooks.">
   <meta name="robots" content="noindex, nofollow">
-  <link rel="icon" type="image/png" href="images/HTA Favicon.png">
+  <link rel="icon" type="image/png" href="images/favicon.png">
 
   <!-- Open Graph -->
   <meta property="og:title" content="HTA+ | Internal">
@@ -1162,13 +1162,20 @@
   </div>
 
   <script>
-    // Simple password gate
-    // Change this value to set the access code
-    const ACCESS_CODE = 'htaplus2026';
+    // Password gate using SHA-256 hash comparison
+    // To change the access code, update the hash below with: echo -n 'newcode' | sha256sum
+    const ACCESS_HASH = '391f05eb9bdc1bc911a236dbd3e8910d0f504cd3cdd4823357e05b3565031852';
 
-    function tryAccess() {
+    async function hashValue(str) {
+      const data = new TextEncoder().encode(str);
+      const buf = await crypto.subtle.digest('SHA-256', data);
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function tryAccess() {
       const input = document.getElementById('passInput');
-      if (input.value === ACCESS_CODE) {
+      const hashed = await hashValue(input.value);
+      if (hashed === ACCESS_HASH) {
         document.getElementById('gate').classList.add('hidden');
         document.getElementById('internal').classList.add('visible');
         sessionStorage.setItem('hta_auth', '1');
