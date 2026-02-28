@@ -21,7 +21,7 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script> -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink: #1a1a2e;
@@ -34,8 +34,8 @@
       --accent-bg: #d8f3dc;
       --white: #ffffff;
       --border: #e0ddd6;
-      --font-display: 'Playfair Display', Georgia, serif;
-      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-display: 'Inter', sans-serif;
+      --font-body: 'Inter', sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -776,12 +776,13 @@
   <div class="contact-section reveal" id="contact">
     <div class="section-inner">
       <div class="section-label">Contact</div>
-      <h2 class="section-heading">Let's talk about what you're building</h2>
+      <h2 class="section-heading">Let's talk...</h2>
+      
       <p class="section-sub">Whether you're evaluating a technology decision, planning an implementation, or need an independent perspective — we're here to help.</p>
 
       <div class="contact-grid">
         <div class="contact-info">
-          <p>We typically respond within one business day. For a preliminary conversation, reach out directly or use the form.</p>
+          <p>For a preliminary conversation, reach out directly or use the form.</p>
           <a href="mailto:htaplus@htaplus.com" class="contact-email">htaplus@htaplus.com</a>
         </div>
         <form class="contact-form" id="contactForm" action="/api/contact" method="POST">
@@ -862,7 +863,7 @@
         return res.json();
       })
       .then(function() {
-        status.textContent = 'Thank you — we\'ll be in touch within one business day.';
+        status.textContent = 'Thank you — we\'ll be in touch soon.';
         status.className = 'form-status success';
         form.reset();
       })
