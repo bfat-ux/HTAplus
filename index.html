@@ -224,11 +224,33 @@
     /* ---- SECTIONS ---- */
     section {
       padding: 5rem 2rem;
+    }
+
+    section .section-inner {
       max-width: 1120px;
       margin: 0 auto;
     }
 
+    /* Alternating section backgrounds */
+    section.section-dark {
+      background: #0f2a44;
+      color: #ffffff;
+    }
+
+    section.section-dark .section-label {
+      color: rgba(255,255,255,0.5);
+    }
+
+    section.section-dark .section-heading {
+      color: #ffffff;
+    }
+
+    section.section-dark .section-sub {
+      color: rgba(255,255,255,0.7);
+    }
+
     .section-divider {
+      display: none;
       width: 100%;
       max-width: 1120px;
       margin: 0 auto;
@@ -284,6 +306,29 @@
       transform: translateY(-3px);
     }
 
+    section.section-dark .service-card {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    section.section-dark .service-card:hover {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      background: rgba(255,255,255,0.1);
+    }
+
+    section.section-dark .service-card h3 {
+      color: #ffffff;
+    }
+
+    section.section-dark .service-card p {
+      color: rgba(255,255,255,0.65);
+    }
+
+    section.section-dark .service-icon {
+      background: rgba(255,255,255,0.1);
+      color: #40916c;
+    }
+
     .service-icon {
       width: 40px;
       height: 40px;
@@ -323,13 +368,17 @@
       font-size: 1rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      color: var(--ink);
+      color: inherit;
     }
 
     .approach-item p {
       font-size: 0.92rem;
       color: var(--ink-muted);
       line-height: 1.6;
+    }
+
+    section.section-dark .approach-item p {
+      color: rgba(255,255,255,0.65);
     }
 
     .approach-num {
@@ -339,6 +388,10 @@
       color: var(--accent-bg);
       margin-bottom: 0.5rem;
       line-height: 1;
+    }
+
+    section.section-dark .approach-num {
+      color: rgba(255,255,255,0.2);
     }
 
     /* ---- INSIGHTS ---- */
@@ -387,11 +440,29 @@
 
     /* ---- CONTACT ---- */
     .contact-section {
-      background: var(--surface-warm);
-      border-radius: 12px;
-      padding: 4rem;
-      margin: 3rem auto 5rem;
+      background: #0f2a44;
+      border-radius: 0;
+      padding: 5rem 2rem;
+      margin: 0;
+      max-width: none;
+      color: #ffffff;
+    }
+
+    .contact-section .section-inner {
       max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .contact-section .section-label {
+      color: rgba(255,255,255,0.5);
+    }
+
+    .contact-section .section-heading {
+      color: #ffffff;
+    }
+
+    .contact-section .section-sub {
+      color: rgba(255,255,255,0.7);
     }
 
     .contact-grid {
@@ -402,7 +473,7 @@
     }
 
     .contact-info p {
-      color: var(--ink-muted);
+      color: rgba(255,255,255,0.7);
       font-size: 0.95rem;
       line-height: 1.7;
       margin-bottom: 1.5rem;
@@ -410,14 +481,14 @@
 
     .contact-email {
       display: inline-block;
-      color: var(--accent);
+      color: #40916c;
       font-weight: 600;
       text-decoration: none;
       font-size: 1.05rem;
       transition: color 0.2s;
     }
 
-    .contact-email:hover { color: var(--accent-light); }
+    .contact-email:hover { color: #52b788; }
 
     .contact-form { display: flex; flex-direction: column; gap: 1rem; }
 
@@ -426,27 +497,33 @@
     .contact-form textarea {
       width: 100%;
       padding: 0.8rem 1rem;
-      border: 1.5px solid var(--border);
+      border: 1.5px solid rgba(255,255,255,0.15);
       border-radius: 6px;
       font-family: var(--font-body);
       font-size: 0.9rem;
-      background: var(--white);
-      color: var(--ink);
+      background: rgba(255,255,255,0.08);
+      color: #ffffff;
       outline: none;
       transition: border-color 0.2s;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form select,
+    .contact-form textarea::placeholder {
+      color: rgba(255,255,255,0.45);
     }
 
     .contact-form input:focus,
     .contact-form select:focus,
     .contact-form textarea:focus {
-      border-color: var(--accent);
+      border-color: rgba(255,255,255,0.4);
     }
 
     .contact-form textarea { min-height: 100px; resize: vertical; }
 
     .contact-form button {
-      background: var(--ink);
-      color: var(--white);
+      background: #ffffff;
+      color: #0f2a44;
       border: none;
       padding: 0.85rem 2rem;
       border-radius: 6px;
@@ -458,7 +535,7 @@
       align-self: flex-start;
     }
 
-    .contact-form button:hover { background: var(--ink-light); }
+    .contact-form button:hover { background: rgba(255,255,255,0.9); }
 
     .contact-form button:disabled {
       opacity: 0.6;
@@ -473,17 +550,18 @@
 
     .form-status.success {
       display: block;
-      color: var(--accent);
+      color: #52b788;
     }
 
     .form-status.error {
       display: block;
-      color: #c0392b;
+      color: #f87171;
     }
 
     /* ---- FOOTER ---- */
     footer {
-      border-top: 1px solid var(--border);
+      background: #0a1f33;
+      border-top: 1px solid rgba(255,255,255,0.08);
       padding: 2rem;
       text-align: center;
     }
@@ -511,14 +589,14 @@
 
     footer p {
       font-size: 0.8rem;
-      color: var(--ink-muted);
+      color: rgba(255,255,255,0.5);
     }
 
     .footer-internal {
       display: flex;
       align-items: center;
-      color: var(--border);
-      opacity: 0.35;
+      color: rgba(255,255,255,0.3);
+      opacity: 0.5;
       transition: opacity 0.2s;
     }
 
@@ -561,7 +639,7 @@
       .hero { padding: 8rem 1.5rem 4rem; }
       .logo img { height: 40px; }
       .contact-grid { grid-template-columns: 1fr; }
-      .contact-section { padding: 2.5rem 1.5rem; margin: 2rem 1rem 3rem; }
+      .contact-section { padding: 3rem 1.5rem; }
       section { padding: 3.5rem 1.5rem; }
       .footer-inner { flex-direction: column; text-align: center; }
     }
@@ -572,7 +650,7 @@
   <!-- NAV -->
   <nav id="navbar">
     <div class="nav-inner">
-      <a href="#top" class="logo"><img src="images/Frame 33.png" alt="HTA+ Healthcare Technology Advisory"></a>
+      <a href="#top" class="logo"><img src="images/HTA Logo icon.svg" alt="HTA+ Healthcare Technology Advisory"></a>
       <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
         <span></span><span></span><span></span>
       </button>
@@ -605,126 +683,130 @@
 
   <!-- SERVICES -->
   <section id="services" class="reveal">
-    <div class="section-label">Services</div>
-    <h2 class="section-heading">Advisory built for healthcare technology</h2>
-    <p class="section-sub">We work across the lifecycle — from evaluating readiness to managing delivery — so that technology investments produce real outcomes.</p>
+    <div class="section-inner">
+      <div class="section-label">Services</div>
+      <h2 class="section-heading">Advisory built for healthcare technology</h2>
+      <p class="section-sub">We work across the lifecycle — from evaluating readiness to managing delivery — so that technology investments produce real outcomes.</p>
 
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <h3>Readiness Assessment</h3>
+          <p>Vendor-neutral evaluations of your technology landscape, organizational capacity, and infrastructure — so you invest in what actually fits.</p>
         </div>
-        <h3>Readiness Assessment</h3>
-        <p>Vendor-neutral evaluations of your technology landscape, organizational capacity, and infrastructure — so you invest in what actually fits.</p>
-      </div>
 
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <h3>Strategy & Policy</h3>
+          <p>Market positioning, growth roadmaps, and policy guidance that align technology choices with regulatory realities and stakeholder needs.</p>
         </div>
-        <h3>Strategy & Policy</h3>
-        <p>Market positioning, growth roadmaps, and policy guidance that align technology choices with regulatory realities and stakeholder needs.</p>
-      </div>
 
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3>Implementation & Management</h3>
+          <p>Hands-on delivery support that translates strategy into operations — with governance structures and performance tracking to keep things on course.</p>
         </div>
-        <h3>Implementation & Management</h3>
-        <p>Hands-on delivery support that translates strategy into operations — with governance structures and performance tracking to keep things on course.</p>
-      </div>
 
-      <div class="service-card">
-        <div class="service-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Training & Capacity Building</h3>
+          <p>Workshops and programs for leaders, teams, and frontline staff — building the internal capability to sustain technology adoption long-term.</p>
         </div>
-        <h3>Training & Capacity Building</h3>
-        <p>Workshops and programs for leaders, teams, and frontline staff — building the internal capability to sustain technology adoption long-term.</p>
       </div>
     </div>
   </section>
-
-  <hr class="section-divider">
 
   <!-- APPROACH -->
-  <section id="approach" class="reveal">
-    <div class="section-label">Approach</div>
-    <h2 class="section-heading">How we think about the work</h2>
-    <p class="section-sub">Healthcare technology doesn't exist in isolation. We start with the system it has to operate in.</p>
+  <section id="approach" class="reveal section-dark">
+    <div class="section-inner">
+      <div class="section-label">Approach</div>
+      <h2 class="section-heading">How we think about the work</h2>
+      <p class="section-sub">Healthcare technology doesn't exist in isolation. We start with the system it has to operate in.</p>
 
-    <div class="approach-grid">
-      <div class="approach-item">
-        <div class="approach-num">01</div>
-        <h3>Systems-first thinking</h3>
-        <p>We map how policy, funding, infrastructure, and care delivery connect before recommending solutions. Technology that ignores context fails.</p>
-      </div>
-      <div class="approach-item">
-        <div class="approach-num">02</div>
-        <h3>Context-aware design</h3>
-        <p>We design for the full picture — economic conditions, community realities, and health equity — not just clinical workflows.</p>
-      </div>
-      <div class="approach-item">
-        <div class="approach-num">03</div>
-        <h3>Deep market expertise</h3>
-        <p>Grounded experience across African and emerging-market health systems, with firsthand understanding of local stakeholders, regulations, and constraints.</p>
-      </div>
-      <div class="approach-item">
-        <div class="approach-num">04</div>
-        <h3>Outcome accountability</h3>
-        <p>From assessment through implementation, we stay engaged and accountable — not just for deliverables, but for results.</p>
+      <div class="approach-grid">
+        <div class="approach-item">
+          <div class="approach-num">01</div>
+          <h3>Systems-first thinking</h3>
+          <p>We map how policy, funding, infrastructure, and care delivery connect before recommending solutions. Technology that ignores context fails.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-num">02</div>
+          <h3>Context-aware design</h3>
+          <p>We design for the full picture — economic conditions, community realities, and health equity — not just clinical workflows.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-num">03</div>
+          <h3>Deep market expertise</h3>
+          <p>Grounded experience across African and emerging-market health systems, with firsthand understanding of local stakeholders, regulations, and constraints.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-num">04</div>
+          <h3>Outcome accountability</h3>
+          <p>From assessment through implementation, we stay engaged and accountable — not just for deliverables, but for results.</p>
+        </div>
       </div>
     </div>
   </section>
-
-  <hr class="section-divider">
 
   <!-- INSIGHTS -->
   <section id="insights" class="reveal">
-    <div class="section-label">Insights</div>
-    <h2 class="section-heading">Perspectives on healthcare technology</h2>
-    <p class="section-sub">Analysis and commentary on the forces shaping health technology adoption and policy.</p>
+    <div class="section-inner">
+      <div class="section-label">Insights</div>
+      <h2 class="section-heading">Perspectives on healthcare technology</h2>
+      <p class="section-sub">Analysis and commentary on the forces shaping health technology adoption and policy.</p>
 
-    <div class="insight-card">
-      <div class="insight-meta">Q1 2026 · 5 min read</div>
-      <h3>Scaling digital health beyond pilots</h3>
-      <p>Why most digital health initiatives stall after proof-of-concept — and what it takes to build infrastructure that lasts.</p>
-      <a href="insights/q1-2026-scaling-digital-health-nigeria.html" class="insight-link">Read more →</a>
+      <div class="insight-card">
+        <div class="insight-meta">Q1 2026 · 5 min read</div>
+        <h3>Scaling digital health beyond pilots</h3>
+        <p>Why most digital health initiatives stall after proof-of-concept — and what it takes to build infrastructure that lasts.</p>
+        <a href="insights/q1-2026-scaling-digital-health-nigeria.html" class="insight-link">Read more →</a>
+      </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <div class="contact-section reveal" id="contact">
-    <div class="section-label">Contact</div>
-    <h2 class="section-heading">Let's talk about what you're building</h2>
-    <p class="section-sub">Whether you're evaluating a technology decision, planning an implementation, or need an independent perspective — we're here to help.</p>
+    <div class="section-inner">
+      <div class="section-label">Contact</div>
+      <h2 class="section-heading">Let's talk about what you're building</h2>
+      <p class="section-sub">Whether you're evaluating a technology decision, planning an implementation, or need an independent perspective — we're here to help.</p>
 
-    <div class="contact-grid">
-      <div class="contact-info">
-        <p>We typically respond within one business day. For a preliminary conversation, reach out directly or use the form.</p>
-        <a href="mailto:htaplus@htaplus.com" class="contact-email">htaplus@htaplus.com</a>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p>We typically respond within one business day. For a preliminary conversation, reach out directly or use the form.</p>
+          <a href="mailto:htaplus@htaplus.com" class="contact-email">htaplus@htaplus.com</a>
+        </div>
+        <form class="contact-form" id="contactForm" action="/api/contact" method="POST">
+          <input type="text" name="name" placeholder="Name" required aria-label="Name">
+          <input type="email" name="email" placeholder="Email" required aria-label="Email">
+          <select name="interest" aria-label="Area of interest">
+            <option value="" disabled selected>What are you interested in?</option>
+            <option value="Readiness Assessment">Readiness Assessment</option>
+            <option value="Strategy & Policy">Strategy &amp; Policy</option>
+            <option value="Implementation & Management">Implementation &amp; Management</option>
+            <option value="Training & Capacity Building">Training &amp; Capacity Building</option>
+            <option value="Something else">Something else</option>
+          </select>
+          <textarea name="message" placeholder="Tell us briefly what you're working on" required aria-label="Message"></textarea>
+          <button type="submit">Send inquiry</button>
+          <div class="form-status" id="formStatus"></div>
+        </form>
       </div>
-      <form class="contact-form" id="contactForm" action="/api/contact" method="POST">
-        <input type="text" name="name" placeholder="Name" required aria-label="Name">
-        <input type="email" name="email" placeholder="Email" required aria-label="Email">
-        <select name="interest" aria-label="Area of interest">
-          <option value="" disabled selected>What are you interested in?</option>
-          <option value="Readiness Assessment">Readiness Assessment</option>
-          <option value="Strategy & Policy">Strategy &amp; Policy</option>
-          <option value="Implementation & Management">Implementation &amp; Management</option>
-          <option value="Training & Capacity Building">Training &amp; Capacity Building</option>
-          <option value="Something else">Something else</option>
-        </select>
-        <textarea name="message" placeholder="Tell us briefly what you're working on" required aria-label="Message"></textarea>
-        <button type="submit">Send inquiry</button>
-        <div class="form-status" id="formStatus"></div>
-      </form>
     </div>
   </div>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
-      <a href="#top" class="footer-brand"><img src="images/Frame 33.png" alt="HTA+ Healthcare Technology Advisory"></a>
+      <a href="#top" class="footer-brand"><img src="images/HTA Logo icon.svg" alt="HTA+ Healthcare Technology Advisory"></a>
       <p>Health Technology Advisory Limited &copy; 2026</p>
       <a href="internal.html" class="footer-internal" title="Team access">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
