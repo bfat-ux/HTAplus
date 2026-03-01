@@ -1,9 +1,8 @@
 const navToggle = document.querySelector(".nav-toggle");
 const primaryNav =
   document.querySelector(".site-nav") || document.querySelector(".nav-links");
-const navOpenClass = primaryNav?.classList.contains("site-nav")
-  ? "is-open"
-  : "open";
+const navOpenClass =
+  primaryNav && primaryNav.classList.contains("site-nav") ? "is-open" : "open";
 
 const closeNav = () => {
   if (!primaryNav || !navToggle) {
@@ -53,18 +52,36 @@ if (navbar) {
 }
 
 const revealTargets = document.querySelectorAll(".reveal");
-if ("IntersectionObserver" in window && revealTargets.length > 0) {
+const prefersReducedMotion =
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (
+  "IntersectionObserver" in window &&
+  revealTargets.length > 0 &&
+  !prefersReducedMotion
+) {
+  document.documentElement.classList.add("reveal-ready");
   const revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
+          revealObserver.unobserve(entry.target);
         }
       });
     },
     { threshold: 0.12 }
   );
-  revealTargets.forEach((target) => revealObserver.observe(target));
+  revealTargets.forEach((target) => {
+    if (target.getBoundingClientRect().top < window.innerHeight * 0.95) {
+      target.classList.add("visible");
+    }
+    revealObserver.observe(target);
+  });
+} else if (revealTargets.length > 0) {
+  document.documentElement.classList.remove("reveal-ready");
+  revealTargets.forEach((target) => target.classList.add("visible"));
 }
 
 const contactForm =
@@ -106,7 +123,7 @@ if (contactForm) {
       interest: formData.get("interest") || "",
     };
 
-    const originalButtonText = submitBtn?.textContent || "";
+    const originalButtonText = submitBtn ? submitBtn.textContent || "" : "";
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = "Sending...";
