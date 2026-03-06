@@ -21,7 +21,13 @@ app.use(bodyParser.json({ limit: "200kb" }));
 
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
-  : ["http://localhost:3000", "http://localhost:5173", "http://localhost:8080"];
+  : [
+      "https://htaplus.com",
+      "https://www.htaplus.com",
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "http://localhost:8080",
+    ];
 
 app.use(
   cors({

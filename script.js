@@ -114,7 +114,7 @@ if (contactForm) {
     const endpoint =
       contactForm.getAttribute("data-endpoint") ||
       contactForm.getAttribute("action") ||
-      "/api/contact";
+      "https://api.htaplus.com/api/contact";
     const formData = new FormData(contactForm);
     const payload = {
       name: formData.get("name"),
