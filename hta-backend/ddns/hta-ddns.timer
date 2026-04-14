@@ -1,0 +1,18 @@
+[Unit]
+Description=Periodically check public IP and update GoDaddy A record
+
+[Timer]
+# First run shortly after boot so we catch any IP change that happened
+# while the Pi was offline.
+OnBootSec=2min
+
+# Then run every 5 minutes.
+OnUnitActiveSec=5min
+
+# If we missed runs (Pi was off), catch up once when it comes back.
+Persistent=true
+
+Unit=hta-ddns.service
+
+[Install]
+WantedBy=timers.target

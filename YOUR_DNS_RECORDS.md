@@ -1,67 +1,49 @@
 # DNS Records for htaplus.com
 
-## Your IP Addresses
+> **Updated April 14, 2026.** The site architecture changed: the static
+> site now lives on GitHub Pages, and only the backend API runs on the
+> Pi at `api.htaplus.com`. The old instructions below (pointing the
+> whole domain at the Pi) are no longer how things are set up.
 
-- **IPv4**: `97.178.74.125` ← **Use this for your A record**
-- **IPv6**: `2600:100d:a0ed:1bba:2ecf:67ff:fee6:a681` (optional)
+## Current layout
 
-## DNS Records to Add
+| Record        | Name  | Value                                   | Purpose |
+|---------------|-------|-----------------------------------------|---------|
+| A             | `@`   | `185.199.108.153`                       | GitHub Pages |
+| A             | `@`   | `185.199.109.153`                       | GitHub Pages |
+| A             | `@`   | `185.199.110.153`                       | GitHub Pages |
+| A             | `@`   | `185.199.111.153`                       | GitHub Pages |
+| CNAME         | `www` | `bfat-ux.github.io.`                    | GitHub Pages |
+| A             | `api` | `<current home public IP>`              | Pi backend |
+| NS / SOA / MX | —     | (managed by GoDaddy / Google Workspace) | leave alone |
 
-Go to your domain registrar (where you bought htaplus.com) and add these records:
+The `api` A record is the only one that needs to track your home IP.
+See `hta-backend/ddns/SETUP.md` for the auto-updater that keeps that
+record in sync whenever your residential IP rotates.
 
-### Required: IPv4 Records (A Records)
+## If you ever need to recover the api record manually
 
-```
-Type: A
-Name: @ (or leave blank)
-Value: 97.178.74.125
-TTL: 3600 (or default)
-
-Type: A
-Name: www
-Value: 97.178.74.125
-TTL: 3600 (or default)
-```
-
-### Optional: IPv6 Records (AAAA Records)
-
-If your registrar supports IPv6 and you want maximum compatibility:
-
-```
-Type: AAAA
-Name: @ (or leave blank)
-Value: 2600:100d:a0ed:1bba:2ecf:67ff:fee6:a681
-TTL: 3600 (or default)
-
-Type: AAAA
-Name: www
-Value: 2600:100d:a0ed:1bba:2ecf:67ff:fee6:a681
-TTL: 3600 (or default)
-```
-
-## After Adding DNS Records
-
-1. **Wait 15-30 minutes** for DNS to propagate
-2. **Test DNS** (on your Mac or Pi):
+1. Find the Pi's current public IP:
    ```bash
-   nslookup htaplus.com
+   curl -s https://api.ipify.org
    ```
-   Should show: `97.178.74.125`
+2. In GoDaddy DNS management for htaplus.com, edit the `A | api`
+   record and set its Data to that IP.
+3. Propagation is usually < 5 min.
 
-3. **Continue with Step 3** in `DOMAIN_SETUP.md` (Update Nginx)
+## Historical notes (for reference only)
 
-## Important: Port Forwarding
+Before Feb 2026 the whole site was served from the Pi at a single
+public IP (at one point `97.178.74.125`, later `97.178.1.154`, now
+`97.178.110.128`, and it will keep changing — which is exactly why the
+DDNS updater exists). The original Nginx + certbot setup docs are in
+`hta-backend/NGINX_SETUP.md`; they still work if you ever want to
+serve the static site from the Pi again, but you'd also need to move
+DNS for `@` and `www` away from GitHub Pages.
 
-Since you're on a home network, you MUST set up port forwarding on your router:
+## Port forwarding reminder
 
-1. Find your Pi's local IP:
-   ```bash
-   hostname -I
-   ```
-   (Should show something like `192.168.1.100`)
-
-2. On your router admin page, forward:
-   - Port 80 → Your Pi's local IP → Port 80
-   - Port 443 → Your Pi's local IP → Port 443
-
-See `DOMAIN_SETUP.md` for detailed port forwarding instructions.
+For `api.htaplus.com` to be reachable from the open internet, your
+home router must forward **port 80** and **port 443** to the Pi's LAN
+IP. This was set up once; it doesn't normally need touching, but if
+you ever swap routers, this is the first thing to re-do.

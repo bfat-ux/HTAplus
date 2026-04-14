@@ -1,0 +1,22 @@
+[Unit]
+Description=Update GoDaddy A record for api.htaplus.com when home IP changes
+Documentation=file:///opt/hta-ddns/SETUP.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/hta-ddns.env
+ExecStart=/usr/local/bin/hta-ddns-update.sh
+
+# Run as root so we can read /etc/hta-ddns.env (mode 600).
+# The script itself only calls curl + python3 and writes to /var/lib/hta-ddns.
+User=root
+
+# Hardening: no need for any special capabilities or filesystem access
+# beyond the state file and the env file.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/hta-ddns
